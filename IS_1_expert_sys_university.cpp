@@ -6,8 +6,8 @@ using namespace std;
 
 const int subnum = 6;
 const char* subs[subnum] = {"математика", "русский", "информатика", "обществознание", "география", "физика"};
-const int citynum = 1;
-const char* cities[citynum] = { "Томск" };
+const int citynum = 2;
+const char* cities[citynum] = { "Томск", "Москва"};
 
 /* класс направление подготовки */
 class direct {
@@ -46,20 +46,26 @@ univer::univer() {
 istream& operator>>(istream& stream, univer& a) {
     
     /* Ввод данных о ВУЗе */
-    char** buff = new char* [6];
-    for (int i = 0; i < 6; i++) {
+    char* buffn = new char[2];
+    stream >> buffn; int n = atoi(buffn);
+    char** buff = new char* [n + 5];
+    delete[] buffn;
+    for (int i = 0; i < n + 5; i++) {
         buff[i] = new char[100];
         stream >> buff[i];
+        if (i != 0 and i < n) {
+            strcat(buff[0], " ");
+            strcat(buff[0], buff[i]);
+        }
     }
     a.name = buff[0];
-    a.city = buff[1];
-    if (atoi(buff[2]) == 1) a.dormitory = true;
+    a.city = buff[n];
+    if (atoi(buff[n + 1]) == 1) a.dormitory = true;
     else a.dormitory = false;
-    if (atoi(buff[3]) == 1) a.military = true;
+    if (atoi(buff[n + 2]) == 1) a.military = true;
     else a.military = false;
-    a.stipend = atoi(buff[4]);
-    a.n = atoi(buff[5]);
-
+    a.stipend = atoi(buff[n + 3]);
+    a.n = atoi(buff[n + 4]);
     delete[] buff;
 
     /* Ввод данных о направлениях подготовки ВУЗа */
@@ -116,6 +122,8 @@ int main()
     univer* unis = new univer[unisnum];
     for (int i = 0; i < unisnum; i++) fin >> unis[i];
     fin.close();
+
+    for (int i = 0; i < unisnum; i++) cout << unis[i];
 
     /* Алгоритм подбора подходящих направлений и ВУЗов с консольным интерфейсом пользователя */
 
